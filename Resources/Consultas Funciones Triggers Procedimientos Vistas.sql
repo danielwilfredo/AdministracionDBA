@@ -75,6 +75,9 @@ INSERT INTO producto (id_producto, nombre_producto, existencia, precio) VALUES
 (14, 'Botas', 15, 89.99),
 (15, 'Bufanda de lana', 50, 14.99);
 
+
+INSERT INTO pedido VALUES(1,1),(2,2),(3,3),(4,4),(5,5);
+
 -- creación de funciones, vistas, procedimientos y triggers 
 
 -- vistas
@@ -102,8 +105,6 @@ END
 DELIMITER ;
 
 -- probando funcionamiento del TRIGGER
-
-INSERT INTO pedido VALUES(1,1),(2,2),(3,3),(4,4),(5,5);
 
 INSERT INTO detalle_pedido VALUES(6, 1, 1, 10, 50);
 
