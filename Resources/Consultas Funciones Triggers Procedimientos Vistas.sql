@@ -75,7 +75,6 @@ INSERT INTO producto (id_producto, nombre_producto, existencia, precio) VALUES
 (14, 'Botas', 15, 89.99),
 (15, 'Bufanda de lana', 50, 14.99);
 
-
 INSERT INTO pedido VALUES(1,1),(2,2),(3,3),(4,4),(5,5);
 
 -- creación de funciones, vistas, procedimientos y triggers 
@@ -83,9 +82,10 @@ INSERT INTO pedido VALUES(1,1),(2,2),(3,3),(4,4),(5,5);
 -- vistas
 
 CREATE VIEW listado_producto AS 
-SELECT nombre_producto, existencia, precio FROM producto; 
+SELECT nombre_producto, precio 
+FROM producto WHERE existencia>25;
 
-SELECT * FROM listado_producto WHERE existencia>25;
+SELECT * FROM listado_producto;
 
 -- trigger
 
@@ -104,9 +104,14 @@ END
 //
 DELIMITER ;
 
+
 -- probando funcionamiento del TRIGGER
 
-INSERT INTO detalle_pedido VALUES(6, 1, 1, 10, 50);
+SELECT * FROM producto;
+
+SELECT * FROM pedido;
+
+INSERT INTO detalle_pedido VALUES(1, 1, 1, 15, 389.85);
 
 DESCRIBE detalle_pedido;
 SHOW TABLES; 
@@ -146,7 +151,9 @@ END
 //
 DELIMITER ;
 
-CALL devolucion_producto2(1, 5);
+SELECT * FROM detalle_pedido;
+
+CALL devolucion_producto(1, 5);
 
 SELECT * FROM producto;
 SELECT * FROM detalle_pedido;
@@ -180,7 +187,7 @@ CALL insertar_cliente(99, 'Wilfredo' );
 
 DELIMITER //
 
-CREATE FUNCTION calcular_total_producto2(producto_id INT, cantidad INT)
+CREATE FUNCTION calcular_total_producto(producto_id INT, cantidad INT)
 RETURNS DECIMAL(10, 2)
 BEGIN
     DECLARE precio_producto DECIMAL(10, 2);
@@ -200,12 +207,15 @@ END
 //
 DELIMITER ;
 
-SELECT calcular_total_producto2(3, 5); -- Devuelve el total para el producto con ID 1 y una cantidad de 3 unidades
+ -- Devuelve el total para el producto con ID 2 y una cantidad de 5 unidades
+SELECT calcular_total_producto(2, 5);
 
 SELECT * FROM producto;
+
+
+INSERT INTO detalle_pedido VALUES(2, 2, 2, 5, calcular_total_producto(2,5));
 SELECT * FROM detalle_pedido;
 
-INSERT INTO detalle_pedido VALUES(4, 4, 4, 4, calcular_total_producto2(4,4));
 INSERT INTO detalle_pedido VALUES(3, 3, 3, 3, 3);
 
 
