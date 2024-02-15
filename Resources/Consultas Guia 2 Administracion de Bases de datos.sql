@@ -222,6 +222,36 @@ ORDER BY Horas DESC;
 SELECT nombre_proyecto, MAX(Horas) FROM cantidad_horas_por_proyecto;
 
 
+-- solucion: 
+
+SELECT d.id_departamento, d.nombre_departamento, COUNT(p.id_proyecto) AS cantidad_proyectos
+FROM departamentos d
+LEFT JOIN empleados e ON d.id_departamento = e.id_departamento
+LEFT JOIN asignaciones a ON e.id_empleado = a.id_empleado
+LEFT JOIN proyectos p ON a.id_proyecto = p.id_proyecto
+GROUP BY d.id_departamento, d.nombre_departamento;
+
+
+
+/*
+Explicación: 
+
+SELECT d.id_departamento, d.nombre_departamento, COUNT(p.id_proyecto) AS cantidad_proyectos: Esta parte indica qué columnas se seleccionarán en la consulta. Estas columnas son:
+
+d.id_departamento: El identificador único de cada departamento.
+d.nombre_departamento: El nombre del departamento.
+COUNT(p.id_proyecto) AS cantidad_proyectos: La cantidad de proyectos asignados a cada departamento. Utilizamos la función de agregación COUNT() para contar el número de proyectos. La cláusula AS cantidad_proyectos asigna un alias a esta columna para que sea más legible.
+FROM departamentos d: Esta parte especifica de qué tabla se van a obtener los datos. En este caso, estamos seleccionando datos de la tabla departamentos y le asignamos el alias d.
+
+LEFT JOIN empleados e ON d.id_departamento = e.id_departamento: Esta línea realiza una unión (JOIN) izquierda (LEFT JOIN) entre las tablas departamentos y empleados. Se une en base a la igualdad de los valores de la columna id_departamento de la tabla departamentos con los valores de la columna id_departamento de la tabla empleados. Esto significa que estamos incluyendo todos los departamentos, incluso aquellos que no tienen empleados asignados.
+
+LEFT JOIN asignaciones a ON e.id_empleado = a.id_empleado: Aquí se realiza otra unión izquierda (LEFT JOIN), esta vez entre las tablas empleados y asignaciones. Se une en base a la igualdad de los valores de la columna id_empleado de la tabla empleados con los valores de la columna id_empleado de la tabla asignaciones. Esto permite incluir todas las asignaciones, incluso si no hay empleados asociados.
+
+LEFT JOIN proyectos p ON a.id_proyecto = p.id_proyecto: Esta línea realiza un LEFT JOIN entre las tablas asignaciones y proyectos. Se une en base a la igualdad de los valores de la columna id_proyecto de la tabla asignaciones con los valores de la columna id_proyecto de la tabla proyectos. De esta manera, obtenemos información sobre los proyectos asignados, incluso si no hay asignaciones.
+
+GROUP BY d.id_departamento, d.nombre_departamento: Finalmente, esta cláusula agrupa los resultados por las columnas id_departamento y nombre_departamento. Esto significa que la función de agregación COUNT() calculará la cantidad de proyectos por cada combinación única de departamento y nombre de departamento.
+*/
+
 
 
 
